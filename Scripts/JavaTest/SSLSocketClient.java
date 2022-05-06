@@ -24,7 +24,7 @@ public class SSLSocketClient {
             double estimatedTime = System.nanoTime() - startTime;
             InputStream in = sslsocket.getInputStream();
             OutputStream out = sslsocket.getOutputStream();
-            double timeInSec = (estimatedTime / 100000000);
+            double timeInSec = (estimatedTime / 1000000000);
             String time = String.valueOf(timeInSec);
             
             out.write(1);
