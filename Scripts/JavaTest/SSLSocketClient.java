@@ -21,9 +21,9 @@ public class SSLSocketClient {
             SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             double startTime = System.nanoTime();
             SSLSocket sslsocket = (SSLSocket) sslsocketfactory.createSocket(host, port);
+            double estimatedTime = System.nanoTime() - startTime;
             InputStream in = sslsocket.getInputStream();
             OutputStream out = sslsocket.getOutputStream();
-            double estimatedTime = System.nanoTime() - startTime;
             double timeInSec = (estimatedTime / 100000000);
             String time = String.valueOf(timeInSec);
             
