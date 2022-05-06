@@ -5,6 +5,11 @@
 #include <netdb.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include <chrono>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
 
 const int ERROR_STATUS = -1;
 
@@ -68,10 +73,22 @@ int main(int argc, char const *argv[])
     {
         fprintf(stderr, "SSL_new() failed\n");
         exit(EXIT_FAILURE);
-    }
+    } 
+    auto start = std::chrono::system_clock::now();
+
+    const int sfd = OpenConnection("oliverw14.pythonanywhere.com", "443");
+
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    cout << elapsed.count() << '\n';
+
+    ofstream myFile;
+    myFile.open("CppResults.txt", std::ios_base::app);
+    myFile << elapsed.count() << endl;
+    myFile.close();
 
     //Host is hardcoded to localhost for testing purposes
-    const int sfd = OpenConnection("oliverw14.pythonanywhere.com", "443");
+
     SSL_set_fd(ssl, sfd);
 
     const int status = SSL_connect(ssl);
@@ -84,6 +101,7 @@ int main(int argc, char const *argv[])
     }
 
     printf("Connected with %s encryption\n", SSL_get_cipher(ssl));
+    //printf("TLS time (ms): %u", duration.count());
     SSL_free(ssl);
     close(sfd);
     SSL_CTX_free(ctx);
