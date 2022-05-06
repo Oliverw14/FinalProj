@@ -75,9 +75,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     } 
     auto start = std::chrono::system_clock::now();
-
     const int sfd = OpenConnection("oliverw14.pythonanywhere.com", "443");
-
     auto end = std::chrono::system_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     cout << elapsed.count() << '\n';
