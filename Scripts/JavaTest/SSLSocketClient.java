@@ -1,3 +1,6 @@
+//Programmer - Oliver Wilson 1447621
+//Purpose - Final Project SSL Test
+//Date 16/05/2022
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.BufferedWriter;
@@ -10,34 +13,18 @@ import javax.net.ssl.SSLSocketFactory;
 public class SSLSocketClient {
     
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Use: SecureConnection host port");
-            System.exit(1);
-        }
-        try {
 
-            String host = getHost(args);
-            Integer port = getPort(args);
-            SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        try {
+            String host = "oliverw14.pythonanywhere.com";
+            Integer port = 443;
             double startTime = System.nanoTime();
+            SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             SSLSocket sslsocket = (SSLSocket) sslsocketfactory.createSocket(host, port);
             InputStream in = sslsocket.getInputStream();
             OutputStream out = sslsocket.getOutputStream();
-            double estimatedTime = System.nanoTime() - startTime;
-            double timeInSec = (estimatedTime / 100000000);
-            String time = String.valueOf(timeInSec);
-            
-            out.write(1);
-            
-            while (in.available() > 0) {
-                System.out.print(in.read());
-            }
-            
-            System.out.println("Secured connection performed successfully");
-            System.out.printf("Hello %.5f%n", timeInSec);
-            FileWriter myWriter = new FileWriter("JavaResults.txt", true);
-            BufferedWriter bWriter = new BufferedWriter(myWriter);
-            bWriter.write(time);
+            double estimatedTime = System.#Programmer - Oliver Wilson 1447621
+            #Purpose - Final Project SSL Test
+            #Date 16/05/2022
             bWriter.newLine();
             bWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -45,23 +32,5 @@ public class SSLSocketClient {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-    }
-    
-    /**
-     * Get the host from arguments
-     * @param args the arguments
-     * @return the port
-     */
-    private static String getHost(String[] args) {
-        return args[0];
-    }
-    
-    /**
-     * Get the port from arguments
-     * @param args the arguments
-     * @return the port
-     */
-    private static Integer getPort(String[] args) {
-        return Integer.parseInt(args[1]);
     }
 }

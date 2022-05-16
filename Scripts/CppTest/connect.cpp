@@ -1,3 +1,7 @@
+//Programmer - Oliver Wilson 1447621
+//Purpose - Final Project SSL Test
+//Date 16/05/2022
+
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
@@ -74,11 +78,14 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "SSL_new() failed\n");
         exit(EXIT_FAILURE);
     } 
-    auto start = std::chrono::system_clock::now();
 
     const int sfd = OpenConnection("oliverw14.pythonanywhere.com", "443");
+    SSL_set_fd(ssl, sfd);
 
-    auto end = std::chrono::system_clock::now();
+    
+    auto start = std::chrono::high_resolution_clock::now();
+    const int status = SSL_connect(ssl);
+    auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     cout << elapsed.count() << '\n';
 
@@ -86,16 +93,9 @@ int main(int argc, char const *argv[])
     myFile.open("CppResults.txt", std::ios_base::app);
     myFile << elapsed.count() << endl;
     myFile.close();
-
-    //Host is hardcoded to localhost for testing purposes
-
-    SSL_set_fd(ssl, sfd);
-
-    const int status = SSL_connect(ssl);
     if (status != 1)
     {
         SSL_get_error(ssl, status);
-        ERR_print_errors_fp(stderr); //High probability this doesn't do anything
         fprintf(stderr, "SSL_connect failed with SSL_get_error code %d\n", status);
         exit(EXIT_FAILURE);
     }
