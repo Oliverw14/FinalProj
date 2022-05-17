@@ -4,8 +4,6 @@
 
 import socket, ssl
 import time
-import datetime
-from traceback import print_tb
 
 begin = time.process_time_ns() # start timer
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
@@ -21,11 +19,10 @@ sslSocket = context.wrap_socket(s, server_hostname = dn) # wrap socket into TLS 
 
 try:
     
-    
     sslSocket.connect((dn, 443)) # TLS socket connection
     perf = time.process_time_ns() - begin # end timer
 
-    print ("Success! Performance time for TLS connection is: ", perf/1000000) #convert from sec. to ms by multiplying with 1000
+    print ("Success! Performance time for TLS connection is: ", perf/1000000) #convert from nano. to ms by dividing with 1000000
     #with open(r"PythonResults.txt", 'r') as fp:
     #    for count, line in enumerate(fp):
     #        pass
@@ -36,6 +33,7 @@ try:
     f.write(perf)
     f.write("\n")
     f.close
+    sslSocket.close() # close the socket
 
 
 except (ssl.SSLError, ssl.SSLEOFError, ssl.CertificateError,ssl.SSLSyscallError, ssl.SSLWantWriteError, ssl.SSLWantReadError,ssl.SSLZeroReturnError) as e1:
